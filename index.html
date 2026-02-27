@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея нейро-картин</title>
+    <link rel="stylesheet" href="./fonts/fonts.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="header__overlay">
+            <div class="header__link">
+                <a href="#gallery" class="header__anchor">Галерея</a>
+            </div>
+            <h1 class="header__title">Выставка нейро-картин</h1>
+        </div>
+    </div>
+    <div class="content">
+        <ul class="gallery" id="gallery">
+            <li class="gallery__item">
+                <img src="./images/1.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/2.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/3.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/4.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/5.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/6.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/7.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/8.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/9.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/10.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/11.png" class="image">
+            </li>
+            <li class="gallery__item">
+                <img src="./images/12.png" class="image">
+            </li>
+        </ul>
+    </div>
+    <div class="footer">
+        <div class="footer__overlay">
+            <p class="footer__text">Сделано руками Ульяны</p>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+  (function() {
+    // Ждем загрузки страницы
+    document.addEventListener('DOMContentLoaded', function() {
+      // Находим все элементы галереи
+      const galleryItems = document.querySelectorAll('.gallery__item');
+      
+      // Проходим по каждому элементу
+      galleryItems.forEach((item, index) => {
+        // Создаем контейнер для лайка
+        const likeContainer = document.createElement('div');
+        likeContainer.className = 'like-container';
+        
+        // Создаем кнопку лайка
+        const likeButton = document.createElement('button');
+        likeButton.className = 'like-button';
+        likeButton.innerHTML = '❤️';
+        likeButton.setAttribute('aria-label', 'Нравится');
+        
+        // Создаем счетчик лайков
+        const likeCount = document.createElement('span');
+        likeCount.className = 'like-count';
+        
+        // Получаем сохраненное значение из localStorage или ставим 0
+        let count = localStorage.getItem(`like_${index}`) ? 
+                    parseInt(localStorage.getItem(`like_${index}`)) : 0;
+        likeCount.textContent = count;
+        
+        // Если есть лайки, добавляем активный класс
+        if (count > 0) {
+          likeButton.classList.add('liked');
+        }
+        
+        // Добавляем обработчик клика
+        likeButton.addEventListener('click', function(e) {
+          e.stopPropagation(); // Чтобы не возникало конфликтов
+          
+          let currentCount = parseInt(likeCount.textContent);
+          
+          // Если уже лайкнуто - убираем лайк
+          if (likeButton.classList.contains('liked')) {
+            currentCount -= 1;
+            likeButton.classList.remove('liked');
+          } else {
+            // Иначе добавляем лайк
+            currentCount += 1;
+            likeButton.classList.add('liked');
+          }
+          
+          // Обновляем счетчик
+          likeCount.textContent = currentCount;
+          
+          // Сохраняем в localStorage
+          localStorage.setItem(`like_${index}`, currentCount);
+        });
+        
+        // Собираем все вместе
+        likeContainer.appendChild(likeButton);
+        likeContainer.appendChild(likeCount);
+        
+        // Добавляем контейнер после изображения
+        item.appendChild(likeContainer);
+      });
+    });
+  })();
+</script>
+
+<style>
+  .like-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 5px;
+  }
+  
+  .like-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .like-button:hover {
+    transform: scale(1.1);
+  }
+  
+  .like-button.liked {
+    color: #ff4444;
+    text-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+  }
+  
+  .like-count {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    min-width: 30px;
+    text-align: center;
+  }
+  
+  .gallery__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+</style>
